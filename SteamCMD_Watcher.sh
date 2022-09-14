@@ -8,7 +8,7 @@
 # /!\ CHANGE THIS /!\
 USER_PATH="/home/steam"
 LOG_PATH="/home/steam/server/Logs"
-RCON = "true"
+RCON=true # or false (mcrcon is required https://github.com/Tiiffi/mcrcon)
 RCON_PASSWORD="PASSWORD"
 APP_ID="000000" # Find your game server ID here : https://developer.valvesoftware.com/wiki/SteamCMD#Game_Servers
 
@@ -22,11 +22,9 @@ SERVER=$USER_PATH/path/of/your/Server.exe
 SERVER_EXE_NAME="Server.exe"
 
 
-
 # ((((((((((((((((((((((((((((((((((((()))))))))))))))))))))))))))))))))))
 # ((((((((((((((((((((((((CHANGE AT YOUR OWN RISK)))))))))))))))))))))))))
 # ((((((((((((((((((((((((((((((((((((()))))))))))))))))))))))))))))))))))
-
 
 # Get the pid of the server with awk
 PID=$(ps -ef | grep $SERVER_EXE_NAME | grep -v 'grep' | grep -v '/bin/sh' | awk '{ printf $2 }')
@@ -56,7 +54,7 @@ $STEAMCMD +force_install_dir $USER_PATH/server +login anonymous +app_update $APP
     if grep -q "Success! App '443030' fully installed." $LOG_PATH/steam_update.log; 
     then
         echo "Update successful, restarting server..."
-        if $RCON = "true"
+        if [ "$RCON" = true ];
         then  
         mcrcon -p $RCON_PASSWORD "broadcast Une mise à jour est disponible pour Conan redémarrage automatique dans 15 minutes, mettez- vous à l'abris !"
         sleep 5m
@@ -82,14 +80,17 @@ $STEAMCMD +force_install_dir $USER_PATH/server +login anonymous +app_update $APP
         echo "No update available"
     fi
 }
-#Call functions
-check_server
-update_server
+#Call functions if needed
+#check_server
+#update_server
 
+#Very important, "$@" allow you to call the functions in the command prompt
+"$@"
 
 # Cron job to check if the server is running every 5 minutes and log the output silently
 # 5 * * * * /home/steam/SteamCMD_Watcher.sh check_server >> /CHANGE_THE_DIRECTORY_HERE/Logs/SteamCMD_Watcher.log 2>&1
 
 # Cron job to check if an update is available every 30 minutes and log the output silently
 # 30 * * * * /home/steam/SteamCMD_Watcher.sh update_server >> /CHANGE_THE_DIRECTORY_HERE/SteamCMD_Watcher.log 2>&1
+
 exit 0
