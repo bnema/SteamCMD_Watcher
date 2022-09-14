@@ -13,16 +13,17 @@ Open the script and edit those lines with your own configuration
 USER_PATH="/home/steam"
 LOG_PATH="/home/steam/server/Logs"
 RCON = "true"
-RCON_PASSWORD="PASSWORD" # If your game server use RCON enter the password here (you'll need to install mcrcon)
-SERVER_EXE_NAME="ConanSandboxServer-Win64-Test.exe"
-APP_ID="443030"
-# Find your game server ID here : https://developer.valvesoftware.com/wiki/SteamCMD#Game_Servers
+RCON_PASSWORD="RcOnPaSsWorD_69"
+APP_ID="443030" # Find your game server ID here : https://developer.valvesoftware.com/wiki/SteamCMD#Game_Servers
 
 # /!\ CHANGE THIS /!\ Create a variable for the path of steamcmd where the steamcmd.sh file is located 
 STEAMCMD=$USER_PATH/.steam/steam/steamcmd/steamcmd.sh
 
-# /!\ CHANGE THIS /!\ Create a variable where the .exe server file is located
+# /!\ CHANGE THIS /!\ Create a variable of the full path of the server
 SERVER=$USER_PATH/server/conan/ConanSandbox/Binaries/Win64/ConanSandboxServer-Win64-Test.exe
+
+# /!\ CHANGE THIS /!\ Create a variable for the name of the server executable
+SERVER_EXE_NAME="ConanSandboxServer-Win64-Test.exe"
 ```
 
 Make the script executable
