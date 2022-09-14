@@ -9,20 +9,14 @@ Open the script and edit those lines with your own configuration
 (Here is an example for Conan Exiles)
 
 ```bash
-# /!\ CHANGE THIS /!\
 USER_PATH="/home/steam"
 LOG_PATH="/home/steam/server/Logs"
-RCON = "true"
+RCON=true # or false (mcrcon is required https://github.com/Tiiffi/mcrcon)
 RCON_PASSWORD="RcOnPaSsWorD_69"
 APP_ID="443030" # Find your game server ID here : https://developer.valvesoftware.com/wiki/SteamCMD#Game_Servers
 
-# /!\ CHANGE THIS /!\ Create a variable of the full path where the steamcmd.sh file is located 
 STEAMCMD=$USER_PATH/.steam/steam/steamcmd/steamcmd.sh
-
-# /!\ CHANGE THIS /!\ Create a variable of the full path of the server
 SERVER=$USER_PATH/server/conan/ConanSandbox/Binaries/Win64/ConanSandboxServer-Win64-Test.exe
-
-# /!\ CHANGE THIS /!\ Create a variable for the name of the server executable
 SERVER_EXE_NAME="ConanSandboxServer-Win64-Test.exe"
 ```
 

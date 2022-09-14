@@ -27,6 +27,7 @@ SERVER_EXE_NAME="Server.exe"
 # ((((((((((((((((((((((((CHANGE AT YOUR OWN RISK)))))))))))))))))))))))))
 # ((((((((((((((((((((((((((((((((((((()))))))))))))))))))))))))))))))))))
 
+
 # Get the pid of the server with awk
 PID=$(ps -ef | grep $SERVER_EXE_NAME | grep -v 'grep' | grep -v '/bin/sh' | awk '{ printf $2 }')
 
@@ -37,9 +38,9 @@ function check_server() {
     # Check if the server is running with grep and write the result in a log file
     if ps -p $PID > /dev/null
     then
-        echo "Server $PID is running" >> $LOG_PATH/SteamCMD_Watcher.log | ts '[%Y-%m-%d %H:%M:%S]'
+        echo "Server $PID is running" >> $LOG_PATH/SteamCMD_Watcher.log 
     else
-        echo "Server is not running starting the server..." >> $LOG_PATH/SteamCMD_Watcher.log | ts '[%Y-%m-%d %H:%M:%S]'
+        echo "Server is not running starting the server..." >> $LOG_PATH/SteamCMD_Watcher.log 
         # If the server is not running, start the server
         xvfb-run --auto-servernum wine64 $SERVER -log -server 
     fi
@@ -55,7 +56,7 @@ $STEAMCMD +force_install_dir $USER_PATH/server +login anonymous +app_update $APP
     if grep -q "Success! App '443030' fully installed." $LOG_PATH/steam_update.log; 
     then
         echo "Update successful, restarting server..."
-        if RCON = "true"
+        if $RCON = "true"
         then  
         mcrcon -p $RCON_PASSWORD "broadcast Une mise à jour est disponible pour Conan redémarrage automatique dans 15 minutes, mettez- vous à l'abris !"
         sleep 5m
