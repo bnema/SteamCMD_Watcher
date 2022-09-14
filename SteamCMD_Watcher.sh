@@ -53,7 +53,7 @@ $STEAMCMD +force_install_dir $USER_PATH/server +login anonymous +app_update $APP
     # Search in the log file if the update was successful
     if grep -q "Success! App '443030' fully installed." $LOG_PATH/steam_update.log; 
     then
-        echo "Update successful, restarting server..."
+        echo "Update successful, restarting server..." >> $LOG_PATH/SteamCMD_Watcher.log 
         if [ "$RCON" = true ];
         then  
         mcrcon -p $RCON_PASSWORD "broadcast Une mise à jour est disponible pour Conan redémarrage automatique dans 15 minutes, mettez- vous à l'abris !"
@@ -77,7 +77,7 @@ $STEAMCMD +force_install_dir $USER_PATH/server +login anonymous +app_update $APP
         # clear the log file
         > $LOG_PATH/steam_update.log
     else
-        echo "No update available"
+        echo "No update available" >> $LOG_PATH/SteamCMD_Watcher.log 
     fi
 }
 #Call functions if needed
