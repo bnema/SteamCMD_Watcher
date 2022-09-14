@@ -16,7 +16,7 @@ RCON = "true"
 RCON_PASSWORD="RcOnPaSsWorD_69"
 APP_ID="443030" # Find your game server ID here : https://developer.valvesoftware.com/wiki/SteamCMD#Game_Servers
 
-# /!\ CHANGE THIS /!\ Create a variable for the path of steamcmd where the steamcmd.sh file is located 
+# /!\ CHANGE THIS /!\ Create a variable of the full path where the steamcmd.sh file is located 
 STEAMCMD=$USER_PATH/.steam/steam/steamcmd/steamcmd.sh
 
 # /!\ CHANGE THIS /!\ Create a variable of the full path of the server
