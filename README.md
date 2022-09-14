@@ -4,7 +4,7 @@ SteamCMD_Watcher is a simple bash monitoring script for Linux allowing you autom
 
 ## How to setup
 
-Open the script and edit those lines with your own configuration
+Open the script and edit the first lines with your own configuration
 
 (Here is an example for Conan Exiles)
 
