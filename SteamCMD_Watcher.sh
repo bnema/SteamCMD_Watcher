@@ -21,12 +21,20 @@ SERVER=$USER_PATH/path/of/your/Server.exe
 # /!\ CHANGE THIS /!\ Create a variable for the name of the server executable
 SERVER_EXE_NAME="Server.exe"
 
+# Define a timesamp with DAY / MONTH / YEAR (Change the format if you want)
+TIMESTAMP=$(date +"%d-%m-%Y %H:%M:%S")
 
 # ((((((((((((((((((((((((((((((((((((()))))))))))))))))))))))))))))))))))
 # ((((((((((((((((((((((((CHANGE AT YOUR OWN RISK)))))))))))))))))))))))))
 # ((((((((((((((((((((((((((((((((((((()))))))))))))))))))))))))))))))))))
-# Define a timesamp variable
-TIMESTAMP=$(date +"%d-%m-%Y %H:%M:%S")
+
+
+# ((((((((((((((((((((((((((((((((((((()))))))))))))))))))))))))))))))))))
+# ((((((((((((((((((((((((CHANGE AT YOUR OWN RISK)))))))))))))))))))))))))
+# ((((((((((((((((((((((((((((((((((((()))))))))))))))))))))))))))))))))))
+# Wait for 60 seconds 
+WATCHDOG_TIME=60
+
 # Get the pid of the server with awk
 PID=$(ps -ef | grep $SERVER_EXE_NAME | grep -v 'grep' | grep -v '/bin/sh' | awk '{ printf $2 }')
 
@@ -37,9 +45,9 @@ function check_server() {
     # Check if the server is running with grep and write the result in a log file
     if ps -p $PID > /dev/null
     then
-        echo "$TIMESTAMP: $SERVER_EXE_NAME | $PID is running everything is fine..." >> $LOG_PATH/SteamCMD_Watcher.log 
+        echo "$TIMESTAMP > $SERVER_EXE_NAME with PID $PID is running..." >> $LOG_PATH/SteamCMD_Watcher.log 
     else
-        echo "$TIMESTAMP: $SERVER_EXE_NAME is not running starting the server..." >> $LOG_PATH/SteamCMD_Watcher.log 
+        echo "$TIMESTAMP > $SERVER_EXE_NAME is not running starting the server..." >> $LOG_PATH/SteamCMD_Watcher.log 
         # If the server is not running, start the server
         xvfb-run --auto-servernum wine64 $SERVER -log -server 
     fi
@@ -50,11 +58,12 @@ function check_server() {
 
 # Ask steamcmd to check for updates
 function update_server() {
-$STEAMCMD +force_install_dir $USER_PATH/server +login anonymous +app_update $APP_ID +app_update +quit | tee $LOG_PATH/steam_update.log
+$STEAMCMD +force_install_dir $USER_PATH/server +login anonymous +app_update $APP_ID +app_update +quit | tee $LOG_PATH/steam_update.log 2>&1
     # Search in the log file if the update was successful
-    if grep -q "Success! App '443030' fully installed." $LOG_PATH/steam_update.log; 
+    if grep -q "Success! App '443030' fully installed." $LOG_PATH/steam_update.log
+    sleep $WATCHDOG_TIME
     then
-        echo "Update successful, restarting server..." >> $LOG_PATH/SteamCMD_Watcher.log 
+        echo "$TIMESTAMP > Update successful, restarting server..." >> $LOG_PATH/SteamCMD_Watcher.log 
         if [ "$RCON" = true ];
         then  
         mcrcon -p $RCON_PASSWORD "broadcast Une mise à jour est disponible pour Conan redémarrage automatique dans 15 minutes, mettez- vous à l'abris !"
@@ -65,7 +74,7 @@ $STEAMCMD +force_install_dir $USER_PATH/server +login anonymous +app_update $APP
         sleep 4m
         mcrcon -p $RCON_PASSWORD "broadcast Une mise à jour est disponible pour Conan redémarrage automatique dans 1 minute."
         else
-        echo "RCON is not activated, restarting the server right now..."
+        echo "$TIMESTAMP >  RCON is not activated, restarting the server right now..." >> $LOG_PATH/SteamCMD_Watcher.log 
         fi
         # Stop the server and wait for the process to end
         SIGINT $PID
@@ -78,7 +87,7 @@ $STEAMCMD +force_install_dir $USER_PATH/server +login anonymous +app_update $APP
         # clear the log file
         > $LOG_PATH/steam_update.log
     else
-        echo "No update available" >> $LOG_PATH/SteamCMD_Watcher.log 
+        echo "$TIMESTAMP > No update available for $SERVER_EXE_NAME" >> $LOG_PATH/SteamCMD_Watcher.log 
     fi
 }
 #Call functions if needed
