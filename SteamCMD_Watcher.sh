@@ -73,10 +73,8 @@ $STEAMCMD +force_install_dir $USER_PATH/server +login anonymous +app_update $APP
         echo "$TIMESTAMP >  RCON is not activated, restarting the server right now..." >> $LOG_PATH/SteamCMD_Watcher.log 
         fi
         # Stop the server and wait for the process to end
-        SIGINT $PID
-        trap SIGINT $PID
-        # Wait for the server to close
-        wait $PID
+        kill -SIGINT $PID
+        trap "kill -SIGINT $PID" SIGINT
         sleep $WATCHDOG_TIME
         # Start the server
         xvfb-run --auto-servernum wine64 $SERVER -log -server 
