@@ -11,9 +11,9 @@ Open the script and edit the first lines with your own configuration
 ```bash
 USER_PATH="/home/steam"
 LOG_PATH="/home/steam/server/Logs"
-RCON=true # or false (mcrcon is required https://github.com/Tiiffi/mcrcon)
+RCON=true # (mcrcon is required https://github.com/Tiiffi/mcrcon)
 RCON_PASSWORD="RcOnPaSsWorD_69"
-APP_ID="443030" # Find your game server ID here : https://developer.valvesoftware.com/wiki/SteamCMD#Game_Servers
+APP_ID="443030" #   Find your game server ID here : https://developer.valvesoftware.com/wiki/SteamCMD#Game_Servers
 
 STEAMCMD=$USER_PATH/.steam/steam/steamcmd/steamcmd.sh
 SERVER=$USER_PATH/server/conan/ConanSandbox/Binaries/Win64/ConanSandboxServer-Win64-Test.exe
@@ -35,26 +35,14 @@ Run the script with a function in prompt. Example :
 Here is a list of all the available functions :
 
 ```bash
-#check_server
-#update_server
-#shutdown_server
-#start_server
-#restart_server
-#monitor_server
-#daily_restart (for cronjob)
-#RCONListPlayers
-```
-
-Additionnaly, you can run the script and only call one function
-
-```bash
-./SeamCMD_Watcher.sh check_server
-```
-
-or
-
-```bash
-./SeamCMD_Watcher.sh update_server
+check_server    # Check if the server is running, if not, start it.
+update_server   # Check in an update is available, if success, restart the server (if you use RCON it will alert the players every 5 minutes for 15 minutes).
+shutdown_server #   Stop the server properly (if you use RCON it will alert the players every 5 minutes for 15 minutes).
+start_server #  Start the server.
+restart_server #    Restart the server (if you use RCON it will alert the players every 5 minutes for 15 minutes).
+monitor_server #    tail -f in the SteamCMD_Watcher.log to monitor the server.
+daily_restart (for cronjob) # Its a restart but with a different RCON message.
+RCONListPlayers # Simply print the RCON command to list all players connected.
 ```
 
 ### Some cron jobs
