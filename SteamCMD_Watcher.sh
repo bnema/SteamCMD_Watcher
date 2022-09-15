@@ -4,6 +4,18 @@ PATH="/usr/local/bin:/usr/bin:/bin" # Needed for MCRCON
 #Description : Script for monitoring and updating game servers for Linux SteamCMD
 #Author : bnema
 #Github : https://github.com/bnema/SteamCMD_Watcher
+#--------------------------------------------#
+# Call functions in prompt if needed. Example: ./SteamCMD_Watcher.sh check_update
+#--------------------------------------------#
+#check_server
+#update_server
+#shutdown_server
+#start_server
+#restart_server
+#monitor_server
+#daily_restart (for cronjob)
+#RCONListPlayers
+#--------------------------------------------#
 
 # /!\ CHANGE THIS /!\
 USER_PATH="/home/steam"
@@ -57,32 +69,44 @@ PID=$(ps -ef | grep $SERVER_EXE_NAME | grep -v 'grep' | grep -v '/bin/sh' | awk 
 
 function reasonUpdate() {
     mcrcon -p $RCON_PASSWORD "broadcast $STRING_REASON_1 $STRING_TIMER_1"
+    echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_1 $STRING_TIMER_1" >> $LOG_PATH/SteamCMD_Watcher.log
     sleep 5m
     mcrcon -p $RCON_PASSWORD "broadcast $STRING_REASON_1 $STRING_TIMER_2"
+    echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_1 $STRING_TIMER_2" >> $LOG_PATH/SteamCMD_Watcher.log
     sleep 5m
     mcrcon -p $RCON_PASSWORD "broadcast $STRING_REASON_1 $STRING_TIMER_3"
+    echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_1 $STRING_TIMER_3" >> $LOG_PATH/SteamCMD_Watcher.log
     sleep 5m
     mcrcon -p $RCON_PASSWORD "broadcast $STRING_REASON_1 $STRING_TIMER_4"
+    echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_1 $STRING_TIMER_4" >> $LOG_PATH/SteamCMD_Watcher.log
     sleep 1m
 }
 function reasonDaily() {
     mcrcon -p $RCON_PASSWORD "broadcast $STRING_REASON_2 $STRING_TIMER_1"
+    echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_2 $STRING_TIMER_1" >> $LOG_PATH/SteamCMD_Watcher.log
     sleep 5m
     mcrcon -p $RCON_PASSWORD "broadcast $STRING_REASON_2 $STRING_TIMER_2"
+    echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_2 $STRING_TIMER_2" >> $LOG_PATH/SteamCMD_Watcher.log
     sleep 5m
     mcrcon -p $RCON_PASSWORD "broadcast $STRING_REASON_2 $STRING_TIMER_3"
+    echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_2 $STRING_TIMER_3" >> $LOG_PATH/SteamCMD_Watcher.log
     sleep 5m
     mcrcon -p $RCON_PASSWORD "broadcast $STRING_REASON_2 $STRING_TIMER_4"
+    echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_2 $STRING_TIMER_4" >> $LOG_PATH/SteamCMD_Watcher.log
     sleep 1m
 }
 function reasonAdmin() {
     mcrcon -p $RCON_PASSWORD "broadcast $STRING_REASON_3 $STRING_TIMER_1"
+    echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_3 $STRING_TIMER_1" >> $LOG_PATH/SteamCMD_Watcher.log
     sleep 5m
     mcrcon -p $RCON_PASSWORD "broadcast $STRING_REASON_3 $STRING_TIMER_2"
+    echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_3 $STRING_TIMER_2" >> $LOG_PATH/SteamCMD_Watcher.log
     sleep 5m
     mcrcon -p $RCON_PASSWORD "broadcast $STRING_REASON_3 $STRING_TIMER_3"
+    echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_3 $STRING_TIMER_3" >> $LOG_PATH/SteamCMD_Watcher.log
     sleep 5m
     mcrcon -p $RCON_PASSWORD "broadcast $STRING_REASON_3 $STRING_TIMER_4"
+    echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_3 $STRING_TIMER_4" >> $LOG_PATH/SteamCMD_Watcher.log
     sleep 1m
 }
 function RCONListPlayers() {
@@ -112,7 +136,7 @@ function check_server() {
 # Function to check if an update is available and download it with SteamCMD
 # If an update is available, the server will be restarted
 # Ask steamcmd to check for updates
-function check_update() {
+function update_server() {
 $STEAMCMD +force_install_dir $USER_PATH/server +login anonymous +app_update $APP_ID +app_update +quit | tee $LOG_PATH/steam_update.log
     # Search in the log file if the update was successful
     if grep -q "Success! App '443030' fully installed." $LOG_PATH/steam_update.log;
@@ -173,18 +197,13 @@ function monitor_server() {
     tail -f $LOG_PATH/SteamCMD_Watcher.log
 }
 #--------------------------------------------#
-#Call functions if needed. Example: ./SteamCMD_Watcher.sh check_update
-#check_server
-#update_server
-#shutdown_server
-#start_server
-#restart_server
-#monitor_server
-#daily_restart (for cronjob)
-#RCONRebootUpdateMsg
-#RCONListPlayers
-
 #Start the script in command prompt silently. Example : ./SteamCMD_Watcher.sh > /dev/null 2>&1 &
+#--------------------------------------------#
+# Some crontab examples :
+#--------------------------------------------#
+
+#Cron job start the server after reboot and log the output in a log file silently
+#@reboot /home/steam/SteamCMD_Watcher.sh start_server >> /CHANGE_THE_DIRECTORY_HERE/Logs/Server_verbose.log > /dev/null 2>&1 &
 
 # Cron job to check if the server is running every 5 minutes and log the output silently
 # 5 * * * * /home/steam/SteamCMD_Watcher.sh check_server >> /CHANGE_THE_DIRECTORY_HERE/Logs/Server_verbose.log > /dev/null 2>&1 &
