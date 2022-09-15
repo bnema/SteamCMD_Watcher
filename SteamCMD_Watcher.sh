@@ -142,6 +142,6 @@ function restart_server() {
 # 5 * * * * /home/steam/SteamCMD_Watcher.sh check_server >> /CHANGE_THE_DIRECTORY_HERE/Logs/SteamCMD_Watcher.log 2>&1
 
 # Cron job to check if an update is available every 30 minutes and log the output silently
-# 30 * * * * /home/steam/SteamCMD_Watcher.sh update_server >> /CHANGE_THE_DIRECTORY_HERE/SteamCMD_Watcher.log 2>&1
+# 30 * * * * /home/steam/SteamCMD_Watcher.sh check_update >> /CHANGE_THE_DIRECTORY_HERE/SteamCMD_Watcher.log 2>&1
 
 exit 0
