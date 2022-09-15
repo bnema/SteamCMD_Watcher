@@ -95,7 +95,6 @@ function RCONListPlayers() {
         echo "${Purple}$TIMESTAMP > ${Red}RCON is not activated" >> $LOG_PATH/SteamCMD_Watcher.log 
         fi
 }
-
 # Function to check if the server is running
 function check_server() {
     # Check if the server is running with grep and write the result in a log file
@@ -109,9 +108,9 @@ function check_server() {
         xvfb-run --auto-servernum wine64 $SERVER -log -server 
     fi
 }
+
 # Function to check if an update is available and download it with SteamCMD
 # If an update is available, the server will be restarted
-
 # Ask steamcmd to check for updates
 function check_update() {
 $STEAMCMD +force_install_dir $USER_PATH/server +login anonymous +app_update $APP_ID +app_update +quit | tee $LOG_PATH/steam_update.log
