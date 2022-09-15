@@ -60,7 +60,6 @@ WATCHDOG_TIME=60
 Green=$'\033[0;32m'
 Red=$'\033[0;31m'
 Yellow=$'\033[0;33m'
-Blue=$'\033[0;34m'
 Purple=$'\033[0;35m'
 Nc=$'\e[0m'
 
@@ -68,44 +67,44 @@ Nc=$'\e[0m'
 PID=$(ps -ef | grep $SERVER_EXE_NAME | grep -v 'grep' | grep -v '/bin/sh' | awk '{ printf $2 }')
 
 function reasonUpdate() {
-    mcrcon -p $RCON_PASSWORD "broadcast $STRING_REASON_1 $STRING_TIMER_1"
+    mcrcon -p "$RCON_PASSWORD" "broadcast $STRING_REASON_1 $STRING_TIMER_1"
     echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_1 $STRING_TIMER_1" >> $LOG_PATH/SteamCMD_Watcher.log
     sleep 5m
-    mcrcon -p $RCON_PASSWORD "broadcast $STRING_REASON_1 $STRING_TIMER_2"
+    mcrcon -p "$RCON_PASSWORD" "broadcast $STRING_REASON_1 $STRING_TIMER_2"
     echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_1 $STRING_TIMER_2" >> $LOG_PATH/SteamCMD_Watcher.log
     sleep 5m
-    mcrcon -p $RCON_PASSWORD "broadcast $STRING_REASON_1 $STRING_TIMER_3"
+    mcrcon -p "$RCON_PASSWORD" "broadcast $STRING_REASON_1 $STRING_TIMER_3"
     echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_1 $STRING_TIMER_3" >> $LOG_PATH/SteamCMD_Watcher.log
     sleep 5m
-    mcrcon -p $RCON_PASSWORD "broadcast $STRING_REASON_1 $STRING_TIMER_4"
+    mcrcon -p "$RCON_PASSWORD" "broadcast $STRING_REASON_1 $STRING_TIMER_4"
     echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_1 $STRING_TIMER_4" >> $LOG_PATH/SteamCMD_Watcher.log
     sleep 1m
 }
 function reasonDaily() {
-    mcrcon -p $RCON_PASSWORD "broadcast $STRING_REASON_2 $STRING_TIMER_1"
+    mcrcon -p "$RCON_PASSWORD" "broadcast $STRING_REASON_2 $STRING_TIMER_1"
     echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_2 $STRING_TIMER_1" >> $LOG_PATH/SteamCMD_Watcher.log
     sleep 5m
-    mcrcon -p $RCON_PASSWORD "broadcast $STRING_REASON_2 $STRING_TIMER_2"
+    mcrcon -p "$RCON_PASSWORD" "broadcast $STRING_REASON_2 $STRING_TIMER_2"
     echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_2 $STRING_TIMER_2" >> $LOG_PATH/SteamCMD_Watcher.log
     sleep 5m
-    mcrcon -p $RCON_PASSWORD "broadcast $STRING_REASON_2 $STRING_TIMER_3"
+    mcrcon -p "$RCON_PASSWORD" "broadcast $STRING_REASON_2 $STRING_TIMER_3"
     echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_2 $STRING_TIMER_3" >> $LOG_PATH/SteamCMD_Watcher.log
     sleep 5m
-    mcrcon -p $RCON_PASSWORD "broadcast $STRING_REASON_2 $STRING_TIMER_4"
+    mcrcon -p "$RCON_PASSWORD" "broadcast $STRING_REASON_2 $STRING_TIMER_4"
     echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_2 $STRING_TIMER_4" >> $LOG_PATH/SteamCMD_Watcher.log
     sleep 1m
 }
 function reasonAdmin() {
-    mcrcon -p $RCON_PASSWORD "broadcast $STRING_REASON_3 $STRING_TIMER_1"
+    mcrcon -p "$RCON_PASSWORD" "broadcast $STRING_REASON_3 $STRING_TIMER_1"
     echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_3 $STRING_TIMER_1" >> $LOG_PATH/SteamCMD_Watcher.log
     sleep 5m
-    mcrcon -p $RCON_PASSWORD "broadcast $STRING_REASON_3 $STRING_TIMER_2"
+    mcrcon -p "$RCON_PASSWORD" "broadcast $STRING_REASON_3 $STRING_TIMER_2"
     echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_3 $STRING_TIMER_2" >> $LOG_PATH/SteamCMD_Watcher.log
     sleep 5m
-    mcrcon -p $RCON_PASSWORD "broadcast $STRING_REASON_3 $STRING_TIMER_3"
+    mcrcon -p "$RCON_PASSWORD" "broadcast $STRING_REASON_3 $STRING_TIMER_3"
     echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_3 $STRING_TIMER_3" >> $LOG_PATH/SteamCMD_Watcher.log
     sleep 5m
-    mcrcon -p $RCON_PASSWORD "broadcast $STRING_REASON_3 $STRING_TIMER_4"
+    mcrcon -p "$RCON_PASSWORD" "broadcast $STRING_REASON_3 $STRING_TIMER_4"
     echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_3 $STRING_TIMER_4" >> $LOG_PATH/SteamCMD_Watcher.log
     sleep 1m
 }
@@ -114,20 +113,20 @@ function RCONListPlayers() {
         then
         # Write with Nc the list of the players in the log file SteamCMD_Watcher.log 
         echo -e "${Purple}$TIMESTAMP > ${Yellow}Liste des joueurs connectés :${Nc}" >> $LOG_PATH/SteamCMD_Watcher.log
-        mcrcon -p $RCON_PASSWORD "listplayers" >> $LOG_PATH/SteamCMD_Watcher.log
+        mcrcon -p "$RCON_PASSWORD" "listplayers" >> $LOG_PATH/SteamCMD_Watcher.log
         else
-        echo "${Purple}$TIMESTAMP > ${Red}RCON is not activated" >> $LOG_PATH/SteamCMD_Watcher.log 
+        echo "${Purple}$TIMESTAMP > ${Red}RCON is not activated${Nc}" >> $LOG_PATH/SteamCMD_Watcher.log 
         fi
 }
 # Function to check if the server is running
 function check_server() {
     # Check if the server is running with grep and write the result in a log file
-    if ps -p $PID > /dev/null
+    if ps -p "$PID" > /dev/null
     then
-        echo "${Purple}$TIMESTAMP > ${Green}$SERVER_EXE_NAME with PID $PID is running..." >> $LOG_PATH/SteamCMD_Watcher.log 
+        echo "${Purple}$TIMESTAMP > ${Green}$SERVER_EXE_NAME with PID $PID is running...${Nc}" >> $LOG_PATH/SteamCMD_Watcher.log 
         RCONListPlayers
     else
-        echo "${Red}$TIMESTAMP > $SERVER_EXE_NAME is not running starting the server..." >> $LOG_PATH/SteamCMD_Watcher.log 
+        echo "${Red}$TIMESTAMP > $SERVER_EXE_NAME is not running starting the server...${Nc}" >> $LOG_PATH/SteamCMD_Watcher.log 
         # If the server is not running, start the server
         xvfb-run --auto-servernum wine64 $SERVER -log -server 
     fi
@@ -141,17 +140,18 @@ $STEAMCMD +force_install_dir $USER_PATH/server +login anonymous +app_update $APP
     # Search in the log file if the update was successful
     if grep -q "Success! App '443030' fully installed." $LOG_PATH/steam_update.log;
     then
-        echo "${Purple}$TIMESTAMP > ${Green}Update successful, restarting server..." >> $LOG_PATH/SteamCMD_Watcher.log 
+        echo "${Purple}$TIMESTAMP > ${Green}Update successful, restarting server...${Nc}" >> $LOG_PATH/SteamCMD_Watcher.log 
         # If the update was successful, restart the server
         reasonUpdate
         # Send signal CTRL+C to the server to stop it
-        kill -SIGINT $PID
+        kill -SIGINT "$PID"
         # Wait for the server to close
         sleep $WATCHDOG_TIME
         # Start the server
         xvfb-run --auto-servernum wine64 $SERVER -log -server 
         # clear the log file
-        > $LOG_PATH/steam_update.log
+        echo "" > $LOG_PATH/steam_update.log
+
     else
         echo "${Purple}TIMESTAMP > ${Red}$No update available for $SERVER_EXE_NAME" >> $LOG_PATH/SteamCMD_Watcher.log 
     fi
@@ -159,23 +159,23 @@ $STEAMCMD +force_install_dir $USER_PATH/server +login anonymous +app_update $APP
 function shutdown_server() {
     reasonAdmin
     # Send signal CTRL+C to the server to stop it
-    kill -SIGINT $PID
-    echo "${Purple}$TIMESTAMP > ${Red}Server is stopping" >> $LOG_PATH/SteamCMD_Watcher.log 
+    kill -SIGINT "$PID"
+    echo "${Purple}$TIMESTAMP > ${Red}Server is stopping${Nc}" >> $LOG_PATH/SteamCMD_Watcher.log 
     # Wait for the server to close
     sleep $WATCHDOG_TIME
-    echo "${Purple}$TIMESTAMP > ${Red}Server is stopped" >> $LOG_PATH/SteamCMD_Watcher.log 
+    echo "${Purple}$TIMESTAMP > ${Red}Server is stopped${Nc}" >> $LOG_PATH/SteamCMD_Watcher.log 
     # clear the log file
-    > $LOG_PATH/SteamCMD_Watcher.log
+    echo "" > $LOG_PATH/steam_update.log
 }
 function start_server() {
     # Start the server
-    echo "${Purple}$TIMESTAMP > ${Red}Server is starting" >> $LOG_PATH/SteamCMD_Watcher.log 
+    echo "${Purple}$TIMESTAMP > ${Red}Server is starting${Nc}" >> $LOG_PATH/SteamCMD_Watcher.log 
     xvfb-run --auto-servernum wine64 $SERVER -log -server 
 }
 function restart_server() {
     # Send signal CTRL+C to the server to stop it
-    kill -SIGINT $PID
-    echo "${Purple}TIMESTAMP > S${Red}$erver is restarting" >> $LOG_PATH/SteamCMD_Watcher.log 
+    kill -SIGINT "$PID"
+    echo "${Purple}TIMESTAMP > ${Red}Server is restarting${Nc}" >> $LOG_PATH/SteamCMD_Watcher.log 
     # Wait for the server to close
     sleep $WATCHDOG_TIME
     # Start the server
@@ -184,14 +184,14 @@ function restart_server() {
 function daily_restart() {
     # Send signal CTRL+C to the server to stop it
     reasonDaily
-    kill -SIGINT $PID
-    echo "${Purple}$TIMESTAMP > ${Red}Server is restarting" >> $LOG_PATH/SteamCMD_Watcher.log 
+    kill -SIGINT "$PID"
+    echo "${Purple}$TIMESTAMP > ${Red}Server is restarting${Nc}" >> $LOG_PATH/SteamCMD_Watcher.log 
     # Wait for the server to close
     sleep $WATCHDOG_TIME
     # Start the server
     xvfb-run --auto-servernum wine64 $SERVER -log -server 
     # clear the log file
-    > $LOG_PATH/SteamCMD_Watcher.log
+    echo "" > $LOG_PATH/steam_update.log
 }
 function monitor_server() {
     tail -f $LOG_PATH/SteamCMD_Watcher.log
