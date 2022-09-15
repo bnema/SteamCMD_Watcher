@@ -22,6 +22,7 @@ USER_PATH="/home/steam"
 LOG_PATH="/home/steam/server/Logs"
 RCON=true # or false (mcrcon is required https://github.com/Tiiffi/mcrcon)
 RCON_PASSWORD="PASSWORD"
+RCON_BROADCAST_ARG="broadcast" # or say (view mcrcon help for more info)
 APP_ID="000000" # Find your game server ID here : https://developer.valvesoftware.com/wiki/SteamCMD#Game_Servers
 
 # /!\ CHANGE THIS /!\ Create a variable of the full path where the steamcmd.sh file is located 
@@ -66,62 +67,71 @@ Nc=$'\e[0m'
 # Get the pid of the server process with awk
 PID=$(ps -ef | grep $SERVER_EXE_NAME | grep -v 'grep' | grep -v '/bin/sh' | awk '{ printf $2 }')
 
-function reasonUpdate() {
-    mcrcon -p "$RCON_PASSWORD" "broadcast $STRING_REASON_1 $STRING_TIMER_1"
-    echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_1 $STRING_TIMER_1" >> $LOG_PATH/SteamCMD_Watcher.log
-    sleep 5m
-    mcrcon -p "$RCON_PASSWORD" "broadcast $STRING_REASON_1 $STRING_TIMER_2"
-    echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_1 $STRING_TIMER_2" >> $LOG_PATH/SteamCMD_Watcher.log
-    sleep 5m
-    mcrcon -p "$RCON_PASSWORD" "broadcast $STRING_REASON_1 $STRING_TIMER_3"
-    echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_1 $STRING_TIMER_3" >> $LOG_PATH/SteamCMD_Watcher.log
-    sleep 5m
-    mcrcon -p "$RCON_PASSWORD" "broadcast $STRING_REASON_1 $STRING_TIMER_4"
-    echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_1 $STRING_TIMER_4" >> $LOG_PATH/SteamCMD_Watcher.log
-    sleep 1m
-}
-function reasonDaily() {
-    mcrcon -p "$RCON_PASSWORD" "broadcast $STRING_REASON_2 $STRING_TIMER_1"
-    echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_2 $STRING_TIMER_1" >> $LOG_PATH/SteamCMD_Watcher.log
-    sleep 5m
-    mcrcon -p "$RCON_PASSWORD" "broadcast $STRING_REASON_2 $STRING_TIMER_2"
-    echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_2 $STRING_TIMER_2" >> $LOG_PATH/SteamCMD_Watcher.log
-    sleep 5m
-    mcrcon -p "$RCON_PASSWORD" "broadcast $STRING_REASON_2 $STRING_TIMER_3"
-    echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_2 $STRING_TIMER_3" >> $LOG_PATH/SteamCMD_Watcher.log
-    sleep 5m
-    mcrcon -p "$RCON_PASSWORD" "broadcast $STRING_REASON_2 $STRING_TIMER_4"
-    echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_2 $STRING_TIMER_4" >> $LOG_PATH/SteamCMD_Watcher.log
-    sleep 1m
-}
-function reasonAdmin() {
-    mcrcon -p "$RCON_PASSWORD" "broadcast $STRING_REASON_3 $STRING_TIMER_1"
-    echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_3 $STRING_TIMER_1" >> $LOG_PATH/SteamCMD_Watcher.log
-    sleep 5m
-    mcrcon -p "$RCON_PASSWORD" "broadcast $STRING_REASON_3 $STRING_TIMER_2"
-    echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_3 $STRING_TIMER_2" >> $LOG_PATH/SteamCMD_Watcher.log
-    sleep 5m
-    mcrcon -p "$RCON_PASSWORD" "broadcast $STRING_REASON_3 $STRING_TIMER_3"
-    echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_3 $STRING_TIMER_3" >> $LOG_PATH/SteamCMD_Watcher.log
-    sleep 5m
-    mcrcon -p "$RCON_PASSWORD" "broadcast $STRING_REASON_3 $STRING_TIMER_4"
-    echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_3 $STRING_TIMER_4" >> $LOG_PATH/SteamCMD_Watcher.log
-    sleep 1m
-}
-function RCONListPlayers() {
-    if [ "$RCON" = true ];
-        then
-        # Write with Nc the list of the players in the log file SteamCMD_Watcher.log 
-        echo -e "${Purple}$TIMESTAMP > ${Yellow}Liste des joueurs connectés :${Nc}" >> $LOG_PATH/SteamCMD_Watcher.log
-        mcrcon -p "$RCON_PASSWORD" "listplayers" >> $LOG_PATH/SteamCMD_Watcher.log
-        else
-        echo "${Purple}$TIMESTAMP > ${Red}RCON is not activated${Nc}" >> $LOG_PATH/SteamCMD_Watcher.log 
-        fi
-}
+# If RCON=true then check if mcrcon is installed
+if [ "$RCON" = true ]; then
+    if [ ! -f /usr/local/bin/mcrcon ]; then
+        echo -e "${Red}mcrcon is not installed. Please install it.${Nc}"
+        exit 1
+    fi
+    function reasonUpdate() {
+        mcrcon -p $RCON_PASSWORD "$RCON_BROADCAST_ARG $STRING_REASON_1 $STRING_TIMER_1"
+        echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_1 $STRING_TIMER_1" >> $LOG_PATH/SteamCMD_Watcher.log
+        sleep 5m
+        mcrcon -p $RCON_PASSWORD "$RCON_BROADCAST_ARG $STRING_REASON_1 $STRING_TIMER_2"
+        echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_1 $STRING_TIMER_2" >> $LOG_PATH/SteamCMD_Watcher.log
+        sleep 5m
+        mcrcon -p $RCON_PASSWORD "$RCON_BROADCAST_ARG $STRING_REASON_1 $STRING_TIMER_3"
+        echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_1 $STRING_TIMER_3" >> $LOG_PATH/SteamCMD_Watcher.log
+        sleep 5m
+        mcrcon -p $RCON_PASSWORD "$RCON_BROADCAST_ARG $STRING_REASON_1 $STRING_TIMER_4"
+        echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_1 $STRING_TIMER_4" >> $LOG_PATH/SteamCMD_Watcher.log
+        sleep 1m
+    }
+    function reasonDaily() {
+        mcrcon -p $RCON_PASSWORD "$RCON_BROADCAST_ARG $STRING_REASON_2 $STRING_TIMER_1"
+        echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_2 $STRING_TIMER_1" >> $LOG_PATH/SteamCMD_Watcher.log
+        sleep 5m
+        mcrcon -p $RCON_PASSWORD "$RCON_BROADCAST_ARG $STRING_REASON_2 $STRING_TIMER_2"
+        echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_2 $STRING_TIMER_2" >> $LOG_PATH/SteamCMD_Watcher.log
+        sleep 5m
+        mcrcon -p $RCON_PASSWORD "$RCON_BROADCAST_ARG $STRING_REASON_2 $STRING_TIMER_3"
+        echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_2 $STRING_TIMER_3" >> $LOG_PATH/SteamCMD_Watcher.log
+        sleep 5m
+        mcrcon -p $RCON_PASSWORD "$RCON_BROADCAST_ARG $STRING_REASON_2 $STRING_TIMER_4"
+        echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_2 $STRING_TIMER_4" >> $LOG_PATH/SteamCMD_Watcher.log
+        sleep 1m
+    }
+    function reasonAdmin() {
+        mcrcon -p $RCON_PASSWORD "$RCON_BROADCAST_ARG $STRING_REASON_3 $STRING_TIMER_1"
+        echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_3 $STRING_TIMER_1" >> $LOG_PATH/SteamCMD_Watcher.log
+        sleep 5m
+        mcrcon -p $RCON_PASSWORD "$RCON_BROADCAST_ARG $STRING_REASON_3 $STRING_TIMER_2"
+        echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_3 $STRING_TIMER_2" >> $LOG_PATH/SteamCMD_Watcher.log
+        sleep 5m
+        mcrcon -p $RCON_PASSWORD "$RCON_BROADCAST_ARG $STRING_REASON_3 $STRING_TIMER_3"
+        echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_3 $STRING_TIMER_3" >> $LOG_PATH/SteamCMD_Watcher.log
+        sleep 5m
+        mcrcon -p $RCON_PASSWORD "$RCON_BROADCAST_ARG $STRING_REASON_3 $STRING_TIMER_4"
+        echo "${Purple}$TIMESTAMP - ${Red}$STRING_REASON_3 $STRING_TIMER_4" >> $LOG_PATH/SteamCMD_Watcher.log
+        sleep 1m
+    }
+    function RCONListPlayers() {
+            # Write with the list of the players in the log file SteamCMD_Watcher.log 
+            echo -e "${Purple}$TIMESTAMP > ${Yellow}Liste des joueurs connectés${Nc}" >> $LOG_PATH/SteamCMD_Watcher.log
+            mcrcon -p $RCON_PASSWORD "listplayers" >> $LOG_PATH/SteamCMD_Watcher.log
+            echo -e "${Purple}$TIMESTAMP > ${Yellow}Fin de la liste des joueurs connectés${Nc}" >> $LOG_PATH/SteamCMD_Watcher.log
+    }
+elif [ "$RCON" = false ]; then
+    echo -e "${Yellow}RCON is disabled.${Nc}" >> $LOG_PATH/SteamCMD_Watcher.log
+else
+    echo -e "${Red}RCON is not set to true or false. Please check your configuration.${Nc}" >> $LOG_PATH/SteamCMD_Watcher.log
+    exit 1
+fi
+
 # Function to check if the server is running
 function check_server() {
     # Check if the server is running with grep and write the result in a log file
-    if ps -p "$PID" > /dev/null
+    if ps -p $PID > /dev/null
     then
         echo "${Purple}$TIMESTAMP > ${Green}$SERVER_EXE_NAME with PID $PID is running...${Nc}" >> $LOG_PATH/SteamCMD_Watcher.log 
         RCONListPlayers
@@ -144,7 +154,7 @@ $STEAMCMD +force_install_dir $USER_PATH/server +login anonymous +app_update $APP
         # If the update was successful, restart the server
         reasonUpdate
         # Send signal CTRL+C to the server to stop it
-        kill -SIGINT "$PID"
+        kill -SIGINT $PID
         # Wait for the server to close
         sleep $WATCHDOG_TIME
         # Start the server
@@ -159,7 +169,7 @@ $STEAMCMD +force_install_dir $USER_PATH/server +login anonymous +app_update $APP
 function shutdown_server() {
     reasonAdmin
     # Send signal CTRL+C to the server to stop it
-    kill -SIGINT "$PID"
+    kill -SIGINT $PID
     echo "${Purple}$TIMESTAMP > ${Red}Server is stopping${Nc}" >> $LOG_PATH/SteamCMD_Watcher.log 
     # Wait for the server to close
     sleep $WATCHDOG_TIME
@@ -173,8 +183,9 @@ function start_server() {
     xvfb-run --auto-servernum wine64 $SERVER -log -server 
 }
 function restart_server() {
+    reasonAdmin
     # Send signal CTRL+C to the server to stop it
-    kill -SIGINT "$PID"
+    kill -SIGINT $PID
     echo "${Purple}TIMESTAMP > ${Red}Server is restarting${Nc}" >> $LOG_PATH/SteamCMD_Watcher.log 
     # Wait for the server to close
     sleep $WATCHDOG_TIME
@@ -184,7 +195,7 @@ function restart_server() {
 function daily_restart() {
     # Send signal CTRL+C to the server to stop it
     reasonDaily
-    kill -SIGINT "$PID"
+    kill -SIGINT $PID
     echo "${Purple}$TIMESTAMP > ${Red}Server is restarting${Nc}" >> $LOG_PATH/SteamCMD_Watcher.log 
     # Wait for the server to close
     sleep $WATCHDOG_TIME
