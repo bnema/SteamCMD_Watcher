@@ -89,7 +89,7 @@ function RCONListPlayers() {
     if [ "$RCON" = true ];
         then
         # Write with Nc the list of the players in the log file SteamCMD_Watcher.log 
-        echo -e "${Purple}$TIMESTAMP : ${Yellow}Liste des joueurs connectés :${Nc}" >> $LOG_PATH/SteamCMD_Watcher.log
+        echo -e "${Purple}$TIMESTAMP > ${Yellow}Liste des joueurs connectés :${Nc}" >> $LOG_PATH/SteamCMD_Watcher.log
         mcrcon -p $RCON_PASSWORD "listplayers" >> $LOG_PATH/SteamCMD_Watcher.log
         else
         echo "${Purple}$TIMESTAMP > ${Red}RCON is not activated" >> $LOG_PATH/SteamCMD_Watcher.log 
