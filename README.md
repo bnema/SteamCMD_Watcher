@@ -1,6 +1,6 @@
 # SteamCMD_Watcher
 
-SteamCMD_Watcher is a simple bash monitoring script for Linux allowing you automatically start your server if stopped or watch if an update is available and then restart the server.
+SteamCMD_Watcher is a simple bash monitoring script for Linux allowing you to automatically start your server if stopped, watch if an update is available and then restart the server.
 
 ## How to setup
 
@@ -55,5 +55,5 @@ Cron job to check if the server is running every 5 minutes and log the output si
 Cron job to check if an update is available every 30 minutes and log the output silently
 
 ```bash
-30 * * * * /home/steam/SteamCMD_Watcher.sh update_server >> /home/steam/server/SteamCMD_Watcher.log 2>&1
+30 * * * * /home/steam/SteamCMD_Watcher.sh check_update >> /home/steam/server/SteamCMD_Watcher.log 2>&1
 ```
