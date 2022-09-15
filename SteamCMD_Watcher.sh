@@ -153,7 +153,7 @@ $STEAMCMD +force_install_dir $USER_PATH/server +login anonymous +app_update $APP
         echo "" > $LOG_PATH/steam_update.log
 
     else
-        echo "${Purple}TIMESTAMP > ${Red}$No update available for $SERVER_EXE_NAME" >> $LOG_PATH/SteamCMD_Watcher.log 
+        echo "${Purple}TIMESTAMP > ${Red}No update available for $SERVER_EXE_NAME${Nc}" >> $LOG_PATH/SteamCMD_Watcher.log 
     fi
 }
 function shutdown_server() {

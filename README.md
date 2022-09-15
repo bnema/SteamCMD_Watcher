@@ -45,6 +45,8 @@ daily_restart (for cronjob) # Its a restart but with a different RCON message.
 RCONListPlayers # Simply print the RCON command to list all players connected.
 ```
 
+## Additional content
+
 ### Some cron jobs
 
 ```bash
