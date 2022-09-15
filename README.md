@@ -26,10 +26,23 @@ Make the script executable
 chmod +x SteamCMD_Watcher.sh
 ```
 
-Run the script
+Run the script with a function in prompt. Example :
 
 ```bash
-./SteamCMD_Watcher.sh 
+./SteamCMD_Watcher.sh start_server
+```
+
+Here is a list of all the available functions :
+
+```bash
+#check_server
+#update_server
+#shutdown_server
+#start_server
+#restart_server
+#monitor_server
+#daily_restart (for cronjob)
+#RCONListPlayers
 ```
 
 Additionnaly, you can run the script and only call one function
@@ -46,14 +59,17 @@ or
 
 ### Some cron jobs
 
-Cron job to check if the server is running every 5 minutes and log the output silently
-
 ```bash
-5 * * * * /home/steam/SteamCMD_Watcher.sh check_server >> /home/steam/server/Logs/SteamCMD_Watcher.log 2>&1
-```
+#Cron job start the server after reboot and log the output in a log file silently
+@reboot /home/steam/SteamCMD_Watcher.sh start_server >> /CHANGE_THE_DIRECTORY_HERE/Logs/Server_verbose.log > /dev/null 2>&1 &
 
-Cron job to check if an update is available every 30 minutes and log the output silently
+# Cron job to check if the server is running every 5 minutes and log the output silently
+5 * * * * /home/steam/SteamCMD_Watcher.sh check_server >> /CHANGE_THE_DIRECTORY_HERE/Logs/Server_verbose.log > /dev/null 2>&1 &
 
-```bash
-30 * * * * /home/steam/SteamCMD_Watcher.sh check_update >> /home/steam/server/SteamCMD_Watcher.log 2>&1
+# Cron job to check if an update is available every 30 minutes and log the output silently
+30 * * * * /home/steam/SteamCMD_Watcher.sh update_server >> /CHANGE_THE_DIRECTORY_HERE/Server_verbose.log > /dev/null 2>&1 &
+
+# Cron job daily restart at 4:00 AM
+0 4 * * * /home/steam/SteamCMD_Watcher.sh daily_restart >> /CHANGE_THE_DIRECTORY_HERE/Server_verbose.log > /dev/null 2>&1 &
+
 ```
